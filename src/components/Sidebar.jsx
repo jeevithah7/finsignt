@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid2X2, TrendingUp, Clock, List, LineChart, FileText, Star, Settings, MoreVertical } from 'lucide-react';
 
-export default function Sidebar({ collapsed = false }) {
+export default function Sidebar({ collapsed = false, activeItem = 'Dashboard' }) {
   return (
     <div style={{
       width: collapsed ? '64px' : '240px',
@@ -45,20 +45,20 @@ export default function Sidebar({ collapsed = false }) {
         
         {/* GROUP 1 */}
         {!collapsed && <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', padding: '0 8px', marginBottom: '6px', marginTop: '10px' }}>MAIN</div>}
-        <NavItem icon={<Grid2X2 size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Dashboard" active collapsed={collapsed} />
-        <NavItem icon={<TrendingUp size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Revenue Analytics" hover collapsed={collapsed} />
-        <NavItem icon={<Clock size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Expenses" collapsed={collapsed} />
-        <NavItem icon={<List size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Transactions" collapsed={collapsed} />
+        <NavItem icon={<Grid2X2 size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Dashboard" active={activeItem === 'Dashboard'} hover={activeItem !== 'Dashboard'} collapsed={collapsed} />
+        <NavItem icon={<TrendingUp size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Revenue Analytics" active={activeItem === 'Revenue Analytics'} hover={activeItem !== 'Revenue Analytics'} collapsed={collapsed} />
+        <NavItem icon={<Clock size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Expenses" active={activeItem === 'Expenses'} hover={activeItem !== 'Expenses'} collapsed={collapsed} />
+        <NavItem icon={<List size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Transactions" active={activeItem === 'Transactions'} hover={activeItem !== 'Transactions'} collapsed={collapsed} />
 
         {/* GROUP 2 */}
         {!collapsed && <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', padding: '0 8px', marginBottom: '6px', marginTop: '10px' }}>INTELLIGENCE</div>}
-        <NavItem icon={<LineChart size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Forecasting" collapsed={collapsed} />
-        <NavItem icon={<FileText size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Reports" collapsed={collapsed} />
-        <NavItem icon={<Star size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Risk Alerts" badge="3" collapsed={collapsed} badgeStyle={{ background: '#EF4444', color: '#FFFFFF' }} />
+        <NavItem icon={<LineChart size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Forecasting" active={activeItem === 'Forecasting'} hover={activeItem !== 'Forecasting'} collapsed={collapsed} />
+        <NavItem icon={<FileText size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Reports" active={activeItem === 'Reports'} hover={activeItem !== 'Reports'} collapsed={collapsed} />
+        <NavItem icon={<Star size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Risk Alerts" active={activeItem === 'Risk Alerts'} hover={activeItem !== 'Risk Alerts'} badge="3" collapsed={collapsed} badgeStyle={{ background: '#EF4444', color: '#FFFFFF' }} />
 
         {/* GROUP 3 */}
         {!collapsed && <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', padding: '0 8px', marginBottom: '6px', marginTop: '10px' }}>SYSTEM</div>}
-        <NavItem icon={<Settings size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Settings" collapsed={collapsed} />
+        <NavItem icon={<Settings size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Settings" active={activeItem === 'Settings'} hover={activeItem !== 'Settings'} collapsed={collapsed} />
         
       </div>
 
