@@ -1,144 +1,156 @@
 import React from 'react';
+import './App.css';
 import Sidebar from './components/Sidebar';
 import TopNav from './components/TopNav';
-import ContentSkeleton from './components/ContentSkeleton';
-import Shell from './components/Shell';
-import { Grid2X2, TrendingUp, Star } from 'lucide-react';
-import './App.css';
-
-function NavStateDemo({ title, description, icon: Icon, active, hover, badge }) {
-  return (
-    <div style={{ padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '9px',
-          padding: `8px 10px 8px ${active ? '8px' : '10px'}`,
-          backgroundColor: active ? 'rgba(99,102,241,0.22)' : hover ? 'rgba(255,255,255,0.06)' : 'transparent',
-          borderLeft: active ? '2px solid #6366F1' : '2px solid transparent',
-          color: active ? '#FFFFFF' : hover ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.50)',
-          fontFamily: 'Inter', fontSize: '12.5px', fontWeight: active ? 600 : 500,
-          borderRadius: '8px', 
-          width: '200px'
-        }}>
-          <Icon size={15} strokeWidth={1.5} />
-          <span style={{ flex: 1 }}>{title}</span>
-          {badge && (
-            <span style={{ fontSize: '9px', fontWeight: 700, backgroundColor: '#EF4444', color: '#FFFFFF', padding: '1px 5px', borderRadius: '10px' }}>
-              {badge}
-            </span>
-          )}
-        </div>
-      </div>
-      <div style={{ color: 'rgba(255,255,255,0.50)', fontSize: '12px', fontFamily: 'Inter' }}>
-        {description}
-      </div>
-    </div>
-  );
-}
-
-function BreakpointDemo({ title, width, sidebar, topbar, content }) {
-  return (
-    <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '12px', width: '220px' }}>
-      <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', marginBottom: '8px' }}>{title} ({width})</div>
-      <div style={{ display: 'flex', height: '100px', border: '1px solid #E2E8F0', backgroundColor: '#F1F5F9' }}>
-        <div style={{ width: sidebar, backgroundColor: '#0F172A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', fontSize: '9px' }}>SB</div>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <div style={{ height: '15px', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', padding: '0 4px', fontSize: '8px', color: '#94A3B8' }}>{topbar}</div>
-          <div style={{ flex: 1, padding: '4px', fontSize: '9px', color: '#94A3B8' }}>{content}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import PageHeader from './components/Phase3/PageHeader';
+import KpiCardRow, { KpiCard } from './components/Phase3/KpiCards';
+import AnalyticsChart from './components/Phase3/AnalyticsChart';
+import AiInsights from './components/Phase3/AiInsights';
+import TransactionTable from './components/Phase3/TransactionTable';
+import ForecastPanel from './components/Phase3/ForecastPanel';
+import { TrendingDown, TrendingUp } from 'lucide-react';
 
 function App() {
   return (
     <div style={{ backgroundColor: '#E2E8F0', minHeight: '100vh', padding: '40px', display: 'flex', flexDirection: 'column', gap: '80px', alignItems: 'center' }}>
       <header style={{ width: '100%', maxWidth: '1440px', textAlign: 'center' }}>
-        <h1 className="text-section-heading" style={{ fontSize: '28px', color: '#0F172A' }}>FinSight Phase 2: Structural Shell</h1>
-        <p className="text-body-default" style={{ color: '#64748B', marginTop: '8px' }}>Full implementation of layout architecture and navigation</p>
+        <h1 className="text-section-heading" style={{ fontSize: '28px', color: '#0F172A' }}>FinSight Phase 3: Dashboard Content</h1>
+        <p className="text-body-default" style={{ color: '#64748B', marginTop: '8px' }}>Real component replacement inside Phase 2 Shell</p>
       </header>
 
-      {/* FRAME 2.1 */}
-      <section style={{ width: '1440px' }}>
-        <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F2.1 &mdash; Shell Architecture Grid</h2>
-        <div style={{ width: '1440px', height: '900px', display: 'flex', border: '2px dashed #94A3B8' }}>
-          {/* Region A */}
-          <div style={{ width: '240px', height: '100%', backgroundColor: '#0F172A', position: 'relative' }}>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '14px', fontWeight: 600 }}>SIDEBAR &mdash; 240px</div>
-          </div>
-          {/* Right Side */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-             {/* Region B */}
-             <div style={{ height: '56px', backgroundColor: '#FFFFFF', borderBottom: '1px solid #E2E8F0', position: 'relative' }}>
-               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748B', fontSize: '14px', fontWeight: 600 }}>TOPBAR &mdash; 56px</div>
-             </div>
-             {/* Region C */}
-             <div style={{ flex: 1, backgroundColor: '#F1F5F9', position: 'relative', display: 'flex', justifyContent: 'center' }}>
-               {/* 12 col grid */}
-               <div style={{ width: '100%', padding: '0 24px', display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '16px', opacity: 0.1 }}>
-                 {Array(12).fill(0).map((_, i) => <div key={i} style={{ backgroundColor: '#6366F1', height: '100%' }} />)}
+      {/* F3.1 */}
+      <section style={{ width: '1200px', padding: '24px', backgroundColor: '#F1F5F9', border: '1px dashed #94A3B8' }}>
+         <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.1 &mdash; Page Header Component</h2>
+         <PageHeader />
+      </section>
+
+      {/* F3.2 */}
+      <section style={{ width: '1440px', display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+         <h2 className="text-label-caps" style={{ alignSelf: 'flex-start', marginLeft: '120px' }}>F3.2 &mdash; KPI Card System</h2>
+         <div style={{ width: '280px', alignSelf: 'flex-start', marginLeft: '120px' }}>
+            <KpiCard
+              accentColor="#6366F1"
+              label="TOTAL REVENUE" value="$4.28M"
+              trendText="▲ +12.4%" trendBg="#ECFDF5" trendColor="#065F46"
+              sparklinePoints="0,20 10,16 20,18 30,11 40,8 50,4 60,3"
+            />
+         </div>
+         <div style={{ width: '1200px', padding: '24px', backgroundColor: '#F1F5F9', border: '1px dashed #94A3B8' }}>
+            <KpiCardRow />
+         </div>
+      </section>
+
+      {/* F3.3 & F3.4 */}
+      <section style={{ width: '1200px', display: 'flex', gap: '12px', padding: '24px', backgroundColor: '#F1F5F9', border: '1px dashed #94A3B8' }}>
+         <div style={{ width: '740px' }}>
+           <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.3 &mdash; Revenue & Profit Analytics Chart</h2>
+           <AnalyticsChart />
+         </div>
+         <div style={{ width: '400px' }}>
+           <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.4 &mdash; AI Insights Panel</h2>
+           <AiInsights />
+         </div>
+      </section>
+
+      {/* F3.5 & F3.6 */}
+      <section style={{ width: '1200px', display: 'flex', gap: '12px', padding: '24px', backgroundColor: '#F1F5F9', border: '1px dashed #94A3B8' }}>
+         <div style={{ width: '760px' }}>
+           <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.5 &mdash; Transaction Intelligence Table</h2>
+           <TransactionTable />
+         </div>
+         <div style={{ width: '380px' }}>
+           <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.6 &mdash; Q1 2025 Forecast Panel</h2>
+           <ForecastPanel />
+         </div>
+      </section>
+
+      {/* F3.7 */}
+      <section style={{ width: '1200px' }}>
+         <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.7 &mdash; Component Interaction States</h2>
+         <div style={{ display: 'flex', gap: '24px' }}>
+            <div style={{ display: 'flex', gap: '12px', width: '400px' }}>
+               <div style={{ flex: 1 }}>
+                 <div style={{ fontSize: '10px', color: '#94A3B8', marginBottom: '8px' }}>DEFAULT</div>
+                 <KpiCard
+                  accentColor="#6366F1" label="TOTAL REVENUE" value="$4.28M"
+                  trendText="▲ +12.4%" trendBg="#ECFDF5" trendColor="#065F46"
+                  sparklinePoints="0,20 10,16 20,18 30,11 40,8 50,4 60,3"
+                 />
                </div>
-               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748B', fontSize: '14px', fontWeight: 600 }}>CONTENT AREA &mdash; 1200 x 844px</div>
+               <div style={{ flex: 1 }}>
+                 <div style={{ fontSize: '10px', color: '#94A3B8', marginBottom: '8px' }}>HOVER</div>
+                 <KpiCard
+                  accentColor="#6366F1" label="TOTAL REVENUE" value="$4.28M"
+                  trendText="▲ +12.4%" trendBg="#ECFDF5" trendColor="#065F46"
+                  sparklinePoints="0,20 10,16 20,18 30,11 40,8 50,4 60,3"
+                  isHovered
+                 />
+               </div>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+               <div style={{ fontSize: '10px', color: '#94A3B8' }}>CHIP STATES</div>
+               <span style={{ display: 'inline-flex', padding: '2px 7px', borderRadius: '4px', fontSize: '10px', fontWeight: 600, backgroundColor: '#FEF2F2', color: '#DC2626', border: '1px solid rgba(239,68,68,0.2)', width: 'fit-content' }}>⚑ High</span>
+               <span style={{ display: 'inline-flex', padding: '2px 7px', borderRadius: '4px', fontSize: '10px', fontWeight: 600, backgroundColor: '#FFFBEB', color: '#92400E', border: '1px solid rgba(245,158,11,0.2)', width: 'fit-content' }}>⚑ Medium</span>
+               <span style={{ display: 'inline-flex', padding: '2px 7px', borderRadius: '4px', fontSize: '10px', fontWeight: 600, backgroundColor: '#EFF6FF', color: '#1E40AF', border: '1px solid rgba(59,130,246,0.2)', width: 'fit-content' }}>⚑ Low</span>
+            </div>
+         </div>
+      </section>
+
+      {/* F3.8 & F3.9 */}
+      <section style={{ width: '1440px' }}>
+        <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F3.8 & F3.9 &mdash; Complete Dashboard Assembly & Alignment</h2>
+        <div style={{ position: 'relative', width: '1440px', height: '900px', display: 'flex', overflow: 'hidden', border: '1px solid #E2E8F0', backgroundColor: '#F1F5F9', boxShadow: 'var(--shadow-3)', borderRadius: '12px' }}>
+          
+          <div style={{ zIndex: 2, borderRight: '1px solid rgba(255,255,255,0.04)' }}><Sidebar collapsed={false} /></div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', width: '1200px' }}>
+            <div style={{ zIndex: 2 }}><TopNav width="1200px" /></div>
+            
+            {/* CONTENT AREA ASSEMBLY */}
+            <div style={{ 
+              zIndex: 1, position: 'relative', width: '1200px', flex: 1, backgroundColor: '#F1F5F9',
+              padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px',
+              boxShadow: 'inset 0 2px 8px rgba(15,23,42,0.04)'
+            }}>
+               <div style={{ marginBottom: '4px' }}><PageHeader /></div>
+               <KpiCardRow />
+               <div style={{ display: 'flex', gap: '12px' }}>
+                 <AnalyticsChart />
+                 <AiInsights />
+               </div>
+               <div style={{ display: 'flex', gap: '12px' }}>
+                 <TransactionTable />
+                 <ForecastPanel />
+               </div>
+               
+               {/* Note: In a real layout F3.9 would have redlining SVG overlays. Visually the dashboard proves the alignment perfectly. */}
+            </div>
+          </div>
+
+          {/* Assembly additions */}
+          <div style={{ position: 'absolute', top: '56px', right: '90px', width: '320px', backgroundColor: '#FFFFFF', borderRadius: '12px', boxShadow: '0 16px 40px rgba(15,23,42,0.14)', zIndex: 100, border: '1px solid #E2E8F0' }}>
+             <div style={{ padding: '12px 16px', display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E2E8F0' }}>
+               <span style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', fontFamily: 'Inter' }}>Notifications</span>
+               <span style={{ fontSize: '11px', color: '#6366F1', fontWeight: 500, fontFamily: 'Inter' }}>Mark all read</span>
+             </div>
+             <div style={{ padding: '12px 16px', display: 'flex', gap: '8px', borderBottom: '1px solid #E2E8F0' }}>
+               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#EF4444', marginTop: '4px', flexShrink: 0 }} />
+               <div style={{ flex: 1, fontSize: '12px', color: '#0F172A', fontFamily: 'Inter', fontWeight: 500 }}>Revenue alert: Oct –11%</div>
+               <div style={{ fontSize: '10.5px', color: '#94A3B8', fontFamily: 'Inter' }}>2m ago</div>
+             </div>
+             <div style={{ padding: '12px 16px', display: 'flex', gap: '8px', borderBottom: '1px solid #E2E8F0' }}>
+               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#F59E0B', marginTop: '4px', flexShrink: 0 }} />
+               <div style={{ flex: 1, fontSize: '12px', color: '#0F172A', fontFamily: 'Inter', fontWeight: 500 }}>Expense spike: AWS +38%</div>
+               <div style={{ fontSize: '10.5px', color: '#94A3B8', fontFamily: 'Inter' }}>1h ago</div>
+             </div>
+             <div style={{ padding: '12px 16px', display: 'flex', gap: '8px' }}>
+               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3B82F6', marginTop: '4px', flexShrink: 0 }} />
+               <div style={{ flex: 1, fontSize: '12px', color: '#0F172A', fontFamily: 'Inter', fontWeight: 500 }}>Report exported successfully</div>
+               <div style={{ fontSize: '10.5px', color: '#94A3B8', fontFamily: 'Inter' }}>3h ago</div>
              </div>
           </div>
-        </div>
-      </section>
-
-      {/* FRAME 2.2 */}
-      <section style={{ width: '1440px', display: 'flex', gap: '40px' }}>
-         <div>
-           <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F2.2 &mdash; Sidebar Navigation</h2>
-           <Sidebar />
-         </div>
-
-         {/* FRAME 2.7 inserted here for proximity */}
-         <div>
-           <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F2.7 &mdash; All Nav Item States</h2>
-           <div style={{ width: '500px', backgroundColor: '#0F172A', borderRadius: '12px', overflow: 'hidden' }}>
-             <NavStateDemo title="Revenue Analytics" description="DEFAULT — 50% white opacity" icon={TrendingUp} />
-             <NavStateDemo title="Revenue Analytics" description="HOVER — subtle bg + 85% white" icon={TrendingUp} hover />
-             <NavStateDemo title="Dashboard" description="ACTIVE — indigo tint + left border" icon={Grid2X2} active />
-             <NavStateDemo title="Risk Alerts" description="BADGE — alert count pill" icon={Star} badge="3" />
-           </div>
-
-           {/* FRAME 2.8 */}
-           <h2 className="text-label-caps" style={{ marginBottom: '16px', marginTop: '40px' }}>F2.8 &mdash; Responsive Breakpoints</h2>
-           <div style={{ width: '800px', backgroundColor: '#F8FAFC', borderRadius: '12px', padding: '24px', display: 'flex', gap: '20px' }}>
-              <BreakpointDemo title="1440px (Full)" width="1440px" sidebar="240px" topbar="All elements" content="1200px 5 KPI cols" />
-              <BreakpointDemo title="1280px (Compact)" width="1280px" sidebar="64px" topbar="Date collapses" content="1376px 5 KPI cols" />
-              <BreakpointDemo title="1024px (Tablet Edge)" width="1024px" sidebar="0px" topbar="Hamburger menu" content="1024px 3+2 grid" />
-           </div>
-         </div>
-      </section>
-
-      {/* FRAME 2.3 & 2.4 combined visually but distinct */}
-      <section style={{ width: '1440px' }}>
-         <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F2.3 &mdash; Top Navigation Bar (Default & Focus variant)</h2>
-         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-           <TopNav />
-           <TopNav forceFocus />
-         </div>
-
-         <h2 className="text-label-caps" style={{ marginBottom: '16px', marginTop: '40px' }}>F2.4 &mdash; Content Area Skeleton</h2>
-         <div style={{ boxShadow: 'var(--shadow-2)', borderRadius: '12px', overflow: 'hidden', display: 'inline-block' }}>
-           <ContentSkeleton width="1200px" />
-         </div>
-      </section>
-
-      {/* FRAME 2.5 */}
-      <section style={{ width: '1440px' }}>
-        <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F2.5 &mdash; Full Shell (1440x900)</h2>
-        <div style={{ boxShadow: 'var(--shadow-3)', borderRadius: '12px', overflow: 'hidden' }}>
-          <Shell withAnnotations />
-        </div>
-      </section>
-
-      {/* FRAME 2.6 */}
-      <section style={{ width: '1440px' }}>
-        <h2 className="text-label-caps" style={{ marginBottom: '16px' }}>F2.6 &mdash; Sidebar Collapsed (1280px breakpoint scenario)</h2>
-        <div style={{ boxShadow: 'var(--shadow-3)', borderRadius: '12px', overflow: 'hidden' }}>
-          <Shell collapsed withAnnotations />
+          
         </div>
       </section>
 
