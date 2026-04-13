@@ -1,256 +1,231 @@
-import React from 'react';
-import Sidebar from '../Sidebar';
-import TopNav from '../TopNav';
+import React, { useState } from 'react';
 
 export default function RevenueAnalytics() {
+  const [viewMode, setViewMode] = useState('MoM'); // 'MoM' or 'YoY'
+
   return (
-    <div style={{ position: 'relative', width: '1440px', height: '900px', display: 'flex', overflow: 'hidden', border: '1px solid #E2E8F0', backgroundColor: '#F1F5F9' }}>
-      
-      {/* SIDEBAR */}
-      <div style={{ zIndex: 2, borderRight: '1px solid rgba(255,255,255,0.04)' }}>
-        <Sidebar activeItem="Revenue Analytics" />
-      </div>
-      
-      <div style={{ display: 'flex', flexDirection: 'column', width: '1200px' }}>
-        {/* TOPBAR */}
-        <div style={{ zIndex: 2 }}>
-          <TopNav width="1200px" />
-        </div>
-        
-        {/* CONTENT AREA */}
-        <div style={{ 
-          zIndex: 1, position: 'relative', width: '1200px', flex: 1, backgroundColor: '#F1F5F9',
-          padding: '24px', display: 'flex', flexDirection: 'column',
-          boxShadow: 'inset 0 2px 8px rgba(15,23,42,0.04)'
-        }}>
+    <div className="page-transition-enter" style={{ 
+      width: '100%', flex: 1, backgroundColor: 'transparent',
+      padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: '20px',
+      boxShadow: 'inset 0 2px 8px rgba(15,23,42,0.04)'
+    }}>
           
           {/* PAGE HEADER */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <h1 style={{ margin: 0, fontFamily: 'Inter', fontSize: '20px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
                 Revenue Analytics
               </h1>
               <p style={{ margin: '4px 0 0 0', fontFamily: 'Inter', fontSize: '13px', fontWeight: 400, color: '#64748B' }}>
-                Detailed breakdown &middot; Fiscal Year 2024
+                Detailed revenue breakdown across segments
               </p>
             </div>
             <div style={{ display: 'flex', gap: '8px' }}>
               <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '4px', display: 'flex' }}>
-                <button style={{ backgroundColor: '#E2E8F0', border: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: 600, color: '#0F172A', cursor: 'pointer', fontFamily: 'Inter' }}>12 Months</button>
-                <button style={{ backgroundColor: 'transparent', border: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: 500, color: '#64748B', cursor: 'pointer', fontFamily: 'Inter' }}>30 Days</button>
-                <button style={{ backgroundColor: 'transparent', border: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: 500, color: '#64748B', cursor: 'pointer', fontFamily: 'Inter' }}>7 Days</button>
+                <button 
+                  onClick={() => setViewMode('MoM')}
+                  style={{ backgroundColor: viewMode === 'MoM' ? '#E2E8F0' : 'transparent', border: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: viewMode === 'MoM' ? 600 : 500, color: viewMode === 'MoM' ? '#0F172A' : '#64748B', cursor: 'pointer', fontFamily: 'Inter' }}
+                >
+                  MoM View
+                </button>
+                <button 
+                  onClick={() => setViewMode('YoY')}
+                  style={{ backgroundColor: viewMode === 'YoY' ? '#E2E8F0' : 'transparent', border: 'none', padding: '4px 12px', borderRadius: '4px', fontSize: '12px', fontWeight: viewMode === 'YoY' ? 600 : 500, color: viewMode === 'YoY' ? '#0F172A' : '#64748B', cursor: 'pointer', fontFamily: 'Inter' }}
+                >
+                  YoY View
+                </button>
               </div>
-              <button style={{ height: '32px', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '0 12px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 500, color: '#0F172A', cursor: 'pointer', fontFamily: 'Inter' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                Select Date
-              </button>
             </div>
           </div>
 
-          {/* ROW 1 — 4 metric strips */}
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-            <MetricStrip label="Annual Recurring Revenue" value="$3.84M" trend="↑ $284K from last year" trendPos={true} />
-            <MetricStrip label="Average Deal Size" value="$4,528" trend="↑ 12% YoY growth" trendPos={true} />
-            <MetricStrip label="Customer LTV" value="$18,240" trend="↓ –3% vs target" trendPos={false} />
-            <MetricStrip label="Revenue per Employee" value="$142K" trend="↑ 8% this quarter" trendPos={true} />
-          </div>
-
-          {/* ROW 2 — 2-column layout */}
-          <div style={{ display: 'flex', gap: '12px', height: '280px', marginBottom: '24px' }}>
-            
-            {/* LEFT COLUMN: Stacked Bar Chart */}
-            <div style={{ width: '60%', backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ marginBottom: '16px' }}>
-                <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '13px', fontWeight: 700, color: '#0F172A' }}>Revenue by Segment</h3>
-                <p style={{ margin: '2px 0 0 0', fontFamily: 'Inter', fontSize: '12px', color: '#64748B' }}>Enterprise vs Mid-Market vs SMB</p>
+          {/* LARGE AREA CHART */}
+          <div style={{ backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', display: 'flex', flexDirection: 'column', height: '360px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <div>
+                <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, color: '#0F172A' }}>Monthly Revenue Streams</h3>
+                <p style={{ margin: '2px 0 0 0', fontFamily: 'Inter', fontSize: '12px', color: '#64748B' }}>Split by Enterprise, SMB, and Individual</p>
               </div>
-              
-              {/* STACKED BAR CHART AREA */}
-              <div style={{ flex: 1, position: 'relative', display: 'flex' }}>
-                {/* Y Axis */}
-                <div style={{ width: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingBottom: '24px' }}>
-                  <span style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter' }}>$1.2M</span>
-                  <span style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter' }}>$800K</span>
-                  <span style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter' }}>$400K</span>
-                  <span style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter' }}>$0</span>
-                </div>
-                {/* Chart body */}
-                <div style={{ flex: 1, position: 'relative', borderBottom: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-around', alignItems: 'flex-end', paddingBottom: '0' }}>
-                  {/* Grid lines */}
-                  <div style={{ position: 'absolute', left: 0, right: 0, top: 0, height: '1px', backgroundColor: '#E2E8F0', opacity: 0.5 }}></div>
-                  <div style={{ position: 'absolute', left: 0, right: 0, top: '33.33%', height: '1px', backgroundColor: '#E2E8F0', opacity: 0.5 }}></div>
-                  <div style={{ position: 'absolute', left: 0, right: 0, top: '66.66%', height: '1px', backgroundColor: '#E2E8F0', opacity: 0.5 }}></div>
-                  
-                  {/* Bars (max 1.2M = 100%) */}
-                  <StackedBar q="Q1 2024" ent={420} mid={210} smb={105} max={1200} />
-                  <StackedBar q="Q2 2024" ent={490} mid={235} smb={118} max={1200} />
-                  <StackedBar q="Q3 2024" ent={560} mid={268} smb={128} max={1200} />
-                  <StackedBar q="Q4 2024" ent={612} mid={295} smb={142} max={1200} />
-                </div>
-              </div>
-              
-              {/* Legend inline */}
-              <div style={{ display: 'flex', gap: '16px', marginTop: '16px', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                 <LegendItem color="#6366F1" label="Enterprise" />
-                <LegendItem color="#8B5CF6" label="Mid-Market" />
-                <LegendItem color="#A78BFA" label="SMB" />
+                <LegendItem color="#8B5CF6" label="SMB" />
+                <LegendItem color="#34D399" label="Individual" />
+              </div>
+            </div>
+            
+            <div style={{ flex: 1, position: 'relative', display: 'flex' }}>
+              {/* Y Axis */}
+              <div style={{ width: '40px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingBottom: '24px' }}>
+                {['$1.2M', '$900K', '$600K', '$300K', '$0'].map(y => (
+                  <span key={y} style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter' }}>{y}</span>
+                ))}
+              </div>
+              
+              {/* Chart SVG Area */}
+              <div style={{ flex: 1, position: 'relative' }}>
+                {/* Horizontal grid lines */}
+                {[0, 25, 50, 75, 100].map(pct => (
+                  <div key={pct} style={{ position: 'absolute', left: 0, right: 0, top: `${pct}%`, height: '1px', backgroundColor: '#E2E8F0', opacity: pct === 100 ? 1 : 0.5 }}></div>
+                ))}
+                
+                <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 100" style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible' }}>
+                   {/* 
+                     Stacked Area Data approximations based on a 10-point curve. 
+                     Total max height is ~$1.2M.
+                     Data format: 100% height = 0y, 0% height = 100y.
+                   */}
+                   
+                   {/* Enterprise: top layer */}
+                   <path d="M 0,100 L 0,80 C 10,70 20,75 30,60 C 40,50 50,55 60,40 C 70,35 80,30 90,20 L 100,15 L 100,100 Z" fill="rgba(99,102,241,0.2)" stroke="#6366F1" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                   
+                   {/* SMB: middle layer */}
+                   <path d="M 0,100 L 0,85 C 15,78 25,82 35,70 C 45,65 55,68 65,55 C 75,50 85,45 100,35 L 100,100 Z" fill="rgba(139,92,246,0.3)" stroke="#8B5CF6" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                   
+                   {/* Individual: bottom layer */}
+                   <path d="M 0,100 L 0,92 C 10,90 30,88 40,85 C 50,82 70,78 80,75 C 90,70 100,65 100,65 L 100,100 Z" fill="rgba(52,211,153,0.4)" stroke="#34D399" strokeWidth="2" vectorEffect="non-scaling-stroke" />
+                   
+                </svg>
+
+                {/* X Axis */}
+                <div style={{ position: 'absolute', left: 0, right: 0, bottom: '-24px', display: 'flex', justifyContent: 'space-between' }}>
+                  {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(m => (
+                    <span key={m} style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter', width: '20px', textAlign: 'center' }}>{m}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* SECOND ROW */}
+          <div style={{ display: 'flex', gap: '20px' }}>
+            
+            {/* Revenue by Segment (Horizontal Bar) */}
+            <div style={{ flex: '1', backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
+              <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, color: '#0F172A', marginBottom: '20px' }}>Revenue by Segment</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: 1, justifyContent: 'center' }}>
+                <HorizontalBar label="Enterprise" val="$5.2M" pct="58%" color="#6366F1" />
+                <HorizontalBar label="SMB" val="$2.8M" pct="31%" color="#8B5CF6" />
+                <HorizontalBar label="Individual" val="$980K" pct="11%" color="#34D399" />
               </div>
             </div>
 
-            {/* RIGHT COLUMN: Donut Chart */}
-            <div style={{ width: '40%', backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ marginBottom: '16px' }}>
-                <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '13px', fontWeight: 700, color: '#0F172A' }}>Revenue Distribution</h3>
-                <p style={{ margin: '2px 0 0 0', fontFamily: 'Inter', fontSize: '12px', color: '#64748B' }}>By client segment &middot; Dec 2024</p>
-              </div>
-              
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                {/* SVG DONUT */}
-                <div style={{ position: 'relative', width: '160px', height: '160px' }}>
-                  <svg width="160" height="160" viewBox="0 0 160 160" style={{ transform: 'rotate(-90deg)' }}>
-                    {/* Enterprise 58% -> cir = pi*d = 3.14*132 = 414.6 */}
-                    <circle cx="80" cy="80" r="66" fill="none" stroke="#6366F1" strokeWidth="28" strokeDasharray="240 414.6" strokeDashoffset="0" />
-                    {/* Mid-Market 27% -> 111.9 */}
-                    <circle cx="80" cy="80" r="66" fill="none" stroke="#8B5CF6" strokeWidth="28" strokeDasharray="109.9 414.6" strokeDashoffset="-242" />
-                    {/* SMB 15% -> 62.1 */}
-                    <circle cx="80" cy="80" r="66" fill="none" stroke="#A78BFA" strokeWidth="28" strokeDasharray="60.1 414.6" strokeDashoffset="-353.9" />
-                  </svg>
-                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', fontFamily: 'Inter' }}>$428K</span>
-                    <span style={{ fontSize: '10px', fontWeight: 400, color: '#64748B', fontFamily: 'Inter', letterSpacing: '0.02em' }}>This Month</span>
+            {/* Revenue Health Score */}
+            <div style={{ flex: '1', backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', display: 'flex', gap: '24px' }}>
+               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minWidth: '130px' }}>
+                  <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '13px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>Health Score</h3>
+                  <div style={{ position: 'relative', width: '100px', height: '100px' }}>
+                     <svg width="100" height="100" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#E2E8F0" strokeWidth="8" />
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#10B981" strokeWidth="8" strokeDasharray="282.7" strokeDashoffset="42" strokeLinecap="round" />
+                     </svg>
+                     <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A', fontFamily: 'Inter', lineHeight: 1 }}>85</span>
+                        <span style={{ fontSize: '10px', fontWeight: 600, color: '#10B981', fontFamily: 'Inter', letterSpacing: '0.05em' }}>HEALTHY</span>
+                     </div>
                   </div>
-                </div>
-
-                {/* Legend list */}
-                <div style={{ marginTop: '24px', width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <DonutLegendRow color="#6366F1" label="Enterprise" pct="58%" val="$248K" />
-                  <DonutLegendRow color="#8B5CF6" label="Mid-Market" pct="27%" val="$116K" />
-                  <DonutLegendRow color="#A78BFA" label="SMB" pct="15%" val="$64K" />
-                </div>
-              </div>
+               </div>
+               
+               <div style={{ flex: 1, borderLeft: '1px solid #E2E8F0', paddingLeft: '24px', display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'center' }}>
+                  <HealthMetric label="Churn Impact" value="-2.1%" target="< 3.0%" status="good" />
+                  <HealthMetric label="Upsell Rate" value="14.5%" target="> 10.0%" status="good" />
+                  <HealthMetric label="New ARR" value="$425K" target="$500K" status="warn" />
+               </div>
             </div>
 
           </div>
 
-          {/* ROW 3 — Top Revenue Clients */}
-          <div style={{ flex: 1, backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ marginBottom: '16px' }}>
-              <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '13px', fontWeight: 700, color: '#0F172A' }}>Top Revenue Clients</h3>
-              <p style={{ margin: '2px 0 0 0', fontFamily: 'Inter', fontSize: '12px', color: '#64748B' }}>Ranked by 2024 total revenue &middot; all segments</p>
+          {/* THIRD ROW - Top Clients by Revenue Table */}
+          <div style={{ flex: 1, backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+              <div>
+                <h3 style={{ margin: 0, fontFamily: 'Inter', fontSize: '14px', fontWeight: 700, color: '#0F172A' }}>Top Clients by Revenue</h3>
+                <p style={{ margin: '2px 0 0 0', fontFamily: 'Inter', fontSize: '12px', color: '#64748B' }}>Ranked by MRR &middot; Active contracts</p>
+              </div>
+              <button style={{ fontSize: '12px', fontWeight: 600, color: '#6366F1', background: 'none', border: 'none', cursor: 'pointer' }}>View All Client Data &rarr;</button>
             </div>
             
-            <div style={{ flex: 1, overflowY: 'auto' }}>
+            <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontFamily: 'Inter' }}>
                 <thead>
                   <tr>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Rank</th>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Client Name</th>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Segment</th>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>2024 Revenue</th>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>MoM Change</th>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Contract Type</th>
-                    <th style={{ padding: '8px 12px', borderBottom: '1px solid #E2E8F0', fontSize: '10px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Renewal Date</th>
+                    <th style={{ padding: '12px 12px 12px 0', borderBottom: '1px solid #E2E8F0', fontSize: '10.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Client Name</th>
+                    <th style={{ padding: '12px', borderBottom: '1px solid #E2E8F0', fontSize: '10.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Plan Tier</th>
+                    <th style={{ padding: '12px', borderBottom: '1px solid #E2E8F0', fontSize: '10.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>MRR</th>
+                    <th style={{ padding: '12px', borderBottom: '1px solid #E2E8F0', fontSize: '10.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>Growth %</th>
+                    <th style={{ padding: '12px', borderBottom: '1px solid #E2E8F0', fontSize: '10.5px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase' }}>6mo Trend</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <TableRow rank={1} name="Nexus Corp" seg="Enterprise" rev="$284,500" mom="+14%" rtype="pos" cont="Annual" date="Mar 2025" />
-                  <TableRow rank={2} name="Vertex AI" seg="Enterprise" rev="$248,000" mom="+22%" rtype="pos" cont="Multi-yr" date="Jan 2026" />
-                  <TableRow rank={3} name="Orbital Labs" seg="Mid-Market" rev="$142,800" mom="+8%" rtype="pos" cont="Annual" date="Jun 2025" />
-                  <TableRow rank={4} name="Helix Systems" seg="Enterprise" rev="$128,400" mom="–3%" rtype="neg" cont="Annual" date="Dec 2024" />
-                  <TableRow rank={5} name="Quantum Metrics" seg="Mid-Market" rev="$98,200" mom="+31%" rtype="pos" cont="Monthly" date="Rolling" />
-                  <TableRow rank={6} name="Axiom Data" seg="Enterprise" rev="$94,500" mom="+6%" rtype="pos" cont="Annual" date="Apr 2025" />
-                  <TableRow rank={7} name="Prism Analytics" seg="SMB" rev="$72,000" mom="+18%" rtype="pos" cont="Annual" date="Sep 2025" />
+                  <ClientRow name="Nexus Corp" tier="Enterprise Plus" mrr="$42,500" growth="+14%" gDir="up" trend="0,15 10,12 20,10 30,8 40,3 50,0" />
+                  <ClientRow name="Vertex AI" tier="Enterprise" mrr="$38,000" growth="+8%" gDir="up" trend="0,10 10,11 20,7 30,5 40,4 50,2" />
+                  <ClientRow name="Orbital Labs" tier="Enterprise" mrr="$27,100" growth="-2%" gDir="down" trend="0,4 10,3 20,8 30,7 40,11 50,15" />
+                  <ClientRow name="Helix Systems" tier="Pro" mrr="$18,400" growth="+22%" gDir="up" trend="0,18 10,16 20,10 30,6 40,4 50,1" />
+                  <ClientRow name="Axiom Data" tier="Enterprise" mrr="$15,200" growth="+4%" gDir="up" trend="0,12 10,10 20,14 30,8 40,6 50,5" />
                 </tbody>
               </table>
             </div>
             
           </div>
 
-        </div>
-      </div>
     </div>
   );
 }
 
 // Subcomponents
-function MetricStrip({ label, value, trend, trendPos }) {
+function LegendItem({ color, label }) {
   return (
-    <div style={{ flex: 1, height: '72px', backgroundColor: '#FFFFFF', borderRadius: '12px', border: '1px solid #E2E8F0', padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <span style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em', color: '#94A3B8', fontFamily: 'Inter', marginBottom: '4px' }}>{label}</span>
-        <span style={{ fontSize: '11px', fontWeight: 500, color: trendPos ? '#10B981' : '#EF4444', fontFamily: 'Inter' }}>{trend}</span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+      <div style={{ width: '10px', height: '10px', borderRadius: '3px', backgroundColor: color }} />
+      <span style={{ fontSize: '11px', color: '#64748B', fontFamily: 'Inter', fontWeight: 500 }}>{label}</span>
+    </div>
+  );
+}
+
+function HorizontalBar({ label, val, pct, color }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontFamily: 'Inter' }}>
+        <span style={{ fontWeight: 600, color: '#0F172A' }}>{label}</span>
+        <span style={{ fontWeight: 700, color: '#0F172A' }}>{val} <span style={{ fontWeight: 500, color: '#94A3B8', marginLeft: '4px' }}>({pct})</span></span>
       </div>
-      <div style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', fontFamily: 'Inter' }}>
-        {value}
+      <div style={{ width: '100%', height: '8px', backgroundColor: '#F1F5F9', borderRadius: '4px', overflow: 'hidden' }}>
+        <div style={{ width: pct, height: '100%', backgroundColor: color, borderRadius: '4px' }}></div>
       </div>
     </div>
   )
 }
 
-function StackedBar({ q, ent, mid, smb, max }) {
-  const total = ent + mid + smb;
-  const hp1 = (ent / max) * 100;
-  const hp2 = (mid / max) * 100;
-  const hp3 = (smb / max) * 100;
-  
+function HealthMetric({ label, value, target, status }) {
+  const isGood = status === 'good';
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', justifyContent: 'flex-end' }}>
-      <div style={{ width: '40px', display: 'flex', flexDirection: 'column-reverse', height: '100%' }}>
-        <div style={{ backgroundColor: '#6366F1', height: `${hp1}%`, width: '100%' }} />
-        <div style={{ backgroundColor: '#8B5CF6', height: `${hp2}%`, width: '100%' }} />
-        <div style={{ backgroundColor: '#A78BFA', height: `${hp3}%`, width: '100%', borderTopLeftRadius: '4px', borderTopRightRadius: '4px' }} />
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <span style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', fontFamily: 'Inter' }}>{label}</span>
+        <span style={{ fontSize: '10px', color: '#94A3B8', fontFamily: 'Inter' }}>Target: {target}</span>
       </div>
-      <div style={{ marginTop: '8px', fontSize: '11px', color: '#64748B', fontFamily: 'Inter', whiteSpace: 'nowrap', position: 'absolute', bottom: '-24px' }}>{q}</div>
-    </div>
-  );
-}
-
-function LegendItem({ color, label }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-      <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color }} />
-      <span style={{ fontSize: '11px', color: '#64748B', fontFamily: 'Inter' }}>{label}</span>
-    </div>
-  );
-}
-
-function DonutLegendRow({ color, label, pct, val }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', fontFamily: 'Inter' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: color }} />
-        <span style={{ color: '#0F172A', fontWeight: 500 }}>{label}</span>
-        <span style={{ color: '#64748B' }}>{pct}</span>
+      <div style={{ padding: '4px 8px', borderRadius: '6px', backgroundColor: isGood ? '#ECFDF5' : '#FFFBEB', color: isGood ? '#065F46' : '#92400E', fontSize: '12px', fontWeight: 600, fontFamily: 'Inter' }}>
+        {value}
       </div>
-      <span style={{ fontWeight: 600, color: '#0F172A' }}>{val}</span>
     </div>
   );
 }
 
-function TableRow({ rank, name, seg, rev, mom, rtype, cont, date }) {
-  const badgeBg = rtype === 'pos' ? '#ECFDF5' : '#FEF2F2';
-  const badgeCx = rtype === 'pos' ? '#065F46' : '#991B1B';
-  const arrow = rtype === 'pos' ? '▲' : '▼';
-  
-  let pBg= '#EFF6FF'; let pCx='#1E40AF';
-  if(cont==='Multi-yr'){ pBg='#EEF2FF'; pCx='#3730A3'; }
-  else if(cont==='Monthly'){ pBg='#FFFBEB'; pCx='#92400E'; }
-
+function ClientRow({ name, tier, mrr, growth, gDir, trend }) {
+  const isUp = gDir === 'up';
   return (
     <tr>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9' }}>
-        <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, color: '#0F172A' }}>{rank}</div>
+      <td style={{ padding: '14px 12px 14px 0', borderBottom: '1px solid #F1F5F9', fontSize: '13px', color: '#0F172A', fontWeight: 600 }}>{name}</td>
+      <td style={{ padding: '14px 12px', borderBottom: '1px solid #F1F5F9' }}>
+        <span style={{ backgroundColor: '#EEF2FF', color: '#3730A3', padding: '3px 8px', borderRadius: '12px', fontSize: '10.5px', fontWeight: 600 }}>{tier}</span>
       </td>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9', fontSize: '13px', color: '#0F172A', fontWeight: 500 }}>{name}</td>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9', fontSize: '12px', color: '#64748B' }}>{seg}</td>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9', fontSize: '13px', color: '#0F172A', fontWeight: 700 }}>{rev}</td>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9' }}>
-        <span style={{ backgroundColor: badgeBg, color: badgeCx, padding: '2px 6px', borderRadius: '4px', fontSize: '11px', fontWeight: 600 }}>{arrow} {mom}</span>
+      <td style={{ padding: '14px 12px', borderBottom: '1px solid #F1F5F9', fontSize: '13px', color: '#0F172A', fontWeight: 700 }}>{mrr}</td>
+      <td style={{ padding: '14px 12px', borderBottom: '1px solid #F1F5F9', fontSize: '12px', fontWeight: 600, color: isUp ? '#10B981' : '#EF4444' }}>
+        {isUp ? '▲' : '▼'} {growth}
       </td>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9' }}>
-        <span style={{ backgroundColor: pBg, color: pCx, padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 600 }}>{cont}</span>
+      <td style={{ padding: '14px 12px', borderBottom: '1px solid #F1F5F9' }}>
+        <svg width="50" height="20" viewBox="0 0 50 20" fill="none">
+          <polyline points={trend} stroke={isUp ? '#10B981' : '#EF4444'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </td>
-      <td style={{ padding: '10px 12px', borderBottom: '1px solid #F1F5F9', fontSize: '12px', color: '#64748B' }}>{date}</td>
     </tr>
   );
 }

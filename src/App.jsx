@@ -1,48 +1,49 @@
 import React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
+
 import Sidebar from './components/Sidebar';
 import TopNav from './components/TopNav';
-import PageHeader from './components/Phase3/PageHeader';
-import KpiCardRow from './components/Phase3/KpiCards';
-import AnalyticsChart from './components/Phase3/AnalyticsChart';
-import AiInsights from './components/Phase3/AiInsights';
-import TransactionTable from './components/Phase3/TransactionTable';
-import ForecastPanel from './components/Phase3/ForecastPanel';
+import DashboardPage from './components/Phase3/DashboardPage';
+import RevenueAnalytics from './components/Phase4/RevenueAnalytics';
+import Expenses from './components/Phase4/Expenses';
+import Transactions from './components/Phase4/Transactions';
+import Forecasting from './components/Phase4/Forecasting';
+import Reports from './components/Phase4/Reports';
+import RiskAlerts from './components/Phase4/RiskAlerts';
+import Settings from './components/Phase4/Settings';
 
-function App() {
+export default function App() {
+  const location = useLocation();
+  
   return (
     <div style={{ position: 'relative', width: '100%', height: '100vh', display: 'flex', overflow: 'hidden', backgroundColor: '#F1F5F9' }}>
       
+      {/* PERSISTENT SIDEBAR */}
       <div style={{ zIndex: 2, borderRight: '1px solid rgba(255,255,255,0.04)' }}>
         <Sidebar collapsed={false} />
       </div>
       
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+        {/* PERSISTENT TOPNAV */}
         <div style={{ zIndex: 2 }}>
           <TopNav width="100%" />
         </div>
         
-        {/* CONTENT AREA ASSEMBLY */}
-        <div style={{ 
-          zIndex: 1, position: 'relative', width: '100%', flex: 1, backgroundColor: '#F1F5F9',
-          padding: '24px 32px', display: 'flex', flexDirection: 'column', gap: '20px',
-          boxShadow: 'inset 0 2px 8px rgba(15,23,42,0.04)',
-          overflowY: 'auto'
-        }}>
-           <div style={{ marginBottom: '4px' }}><PageHeader /></div>
-           <KpiCardRow />
-           <div style={{ display: 'flex', gap: '20px' }}>
-             <div style={{ flex: 1, minWidth: 0 }}><AnalyticsChart /></div>
-             <div style={{ flexShrink: 0, width: '400px' }}><AiInsights /></div>
-           </div>
-           <div style={{ display: 'flex', gap: '20px' }}>
-             <div style={{ flex: 1, minWidth: 0 }}><TransactionTable /></div>
-             <div style={{ flexShrink: 0, width: '380px' }}><ForecastPanel /></div>
-           </div>
+        {/* ROUTED CONTENT AREA */}
+        <div style={{ flex: 1, position: 'relative', backgroundColor: '#F1F5F9', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+           <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/revenue-analytics" element={<RevenueAnalytics />} />
+              <Route path="/expenses" element={<Expenses />} />
+              <Route path="/transactions" element={<Transactions />} />
+              <Route path="/forecasting" element={<Forecasting />} />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/risk-alerts" element={<RiskAlerts />} />
+              <Route path="/settings" element={<Settings />} />
+           </Routes>
         </div>
       </div>
     </div>
   );
 }
-
-export default App;

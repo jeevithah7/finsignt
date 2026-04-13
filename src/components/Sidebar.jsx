@@ -1,7 +1,10 @@
 import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import { Grid2X2, TrendingUp, Clock, List, LineChart, FileText, Star, Settings, MoreVertical } from 'lucide-react';
 
-export default function Sidebar({ collapsed = false, activeItem = 'Dashboard' }) {
+export default function Sidebar({ collapsed = false }) {
+  const location = useLocation();
+  const path = location.pathname;
   return (
     <div style={{
       width: collapsed ? '64px' : '240px',
@@ -45,20 +48,20 @@ export default function Sidebar({ collapsed = false, activeItem = 'Dashboard' })
         
         {/* GROUP 1 */}
         {!collapsed && <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', padding: '0 8px', marginBottom: '6px', marginTop: '10px' }}>MAIN</div>}
-        <NavItem icon={<Grid2X2 size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Dashboard" active={activeItem === 'Dashboard'} hover={activeItem !== 'Dashboard'} collapsed={collapsed} />
-        <NavItem icon={<TrendingUp size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Revenue Analytics" active={activeItem === 'Revenue Analytics'} hover={activeItem !== 'Revenue Analytics'} collapsed={collapsed} />
-        <NavItem icon={<Clock size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Expenses" active={activeItem === 'Expenses'} hover={activeItem !== 'Expenses'} collapsed={collapsed} />
-        <NavItem icon={<List size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Transactions" active={activeItem === 'Transactions'} hover={activeItem !== 'Transactions'} collapsed={collapsed} />
+        <NavItem to="/" icon={<Grid2X2 size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Dashboard" active={path === '/'} collapsed={collapsed} />
+        <NavItem to="/revenue-analytics" icon={<TrendingUp size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Revenue Analytics" active={path === '/revenue-analytics'} collapsed={collapsed} />
+        <NavItem to="/expenses" icon={<Clock size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Expenses" active={path === '/expenses'} collapsed={collapsed} />
+        <NavItem to="/transactions" icon={<List size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Transactions" active={path === '/transactions'} collapsed={collapsed} />
 
         {/* GROUP 2 */}
         {!collapsed && <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', padding: '0 8px', marginBottom: '6px', marginTop: '10px' }}>INTELLIGENCE</div>}
-        <NavItem icon={<LineChart size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Forecasting" active={activeItem === 'Forecasting'} hover={activeItem !== 'Forecasting'} collapsed={collapsed} />
-        <NavItem icon={<FileText size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Reports" active={activeItem === 'Reports'} hover={activeItem !== 'Reports'} collapsed={collapsed} />
-        <NavItem icon={<Star size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Risk Alerts" active={activeItem === 'Risk Alerts'} hover={activeItem !== 'Risk Alerts'} badge="3" collapsed={collapsed} badgeStyle={{ background: '#EF4444', color: '#FFFFFF' }} />
+        <NavItem to="/forecasting" icon={<LineChart size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Forecasting" active={path === '/forecasting'} collapsed={collapsed} />
+        <NavItem to="/reports" icon={<FileText size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Reports" active={path === '/reports'} collapsed={collapsed} />
+        <NavItem to="/risk-alerts" icon={<Star size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Risk Alerts" active={path === '/risk-alerts'} badge="3" collapsed={collapsed} badgeStyle={{ background: '#EF4444', color: '#FFFFFF' }} />
 
         {/* GROUP 3 */}
         {!collapsed && <div style={{ fontSize: '10px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.25)', padding: '0 8px', marginBottom: '6px', marginTop: '10px' }}>SYSTEM</div>}
-        <NavItem icon={<Settings size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Settings" active={activeItem === 'Settings'} hover={activeItem !== 'Settings'} collapsed={collapsed} />
+        <NavItem to="/settings" icon={<Settings size={collapsed ? 20 : 15} strokeWidth={1.5} />} label="Settings" active={path === '/settings'} collapsed={collapsed} />
         
       </div>
 
@@ -96,67 +99,69 @@ export default function Sidebar({ collapsed = false, activeItem = 'Dashboard' })
   );
 }
 
-function NavItem({ icon, label, active, hover, collapsed, badge }) {
+function NavItem({ to, icon, label, active, collapsed, badge }) {
   // Compute styles based on state
-  let bg = 'transparent';
-  let color = 'rgba(255,255,255,0.50)';
-  let paddingLeft = collapsed ? '0' : '10px';
-  let borderLeft = '2px solid transparent';
-  let fontWeight = 500;
-
-  if (hover) {
-    bg = 'rgba(255,255,255,0.06)';
-    color = 'rgba(255,255,255,0.85)';
-  }
-  
-  if (active) {
-    bg = 'rgba(99,102,241,0.22)';
-    color = '#FFFFFF';
-    fontWeight = 600;
-    if (!collapsed) {
-      borderLeft = '2px solid #6366F1';
-      paddingLeft = '8px';
-    }
-  }
+  let bg = active ? 'rgba(99,102,241,0.22)' : 'transparent';
+  let color = active ? '#FFFFFF' : 'rgba(255,255,255,0.50)';
+  let paddingLeft = collapsed ? '0' : (active ? '8px' : '10px');
+  let borderLeft = active && !collapsed ? '2px solid #6366F1' : '2px solid transparent';
+  let fontWeight = active ? 600 : 500;
 
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '9px',
-      padding: collapsed ? '8px 0' : `8px 10px 8px ${paddingLeft}`,
-      justifyContent: collapsed ? 'center' : 'flex-start',
-      borderRadius: '8px',
-      marginBottom: '2px',
-      backgroundColor: bg,
-      borderLeft: borderLeft,
-      color: color,
-      fontFamily: 'Inter',
-      fontSize: '12.5px',
-      fontWeight: fontWeight,
-      cursor: 'pointer',
-      position: 'relative'
-    }}>
-      {icon}
-      {!collapsed && (
-        <>
-          <span style={{ flex: 1 }}>{label}</span>
-          {badge && (
-            <span style={{
-              fontSize: '9px', fontWeight: 700, backgroundColor: '#EF4444', color: '#FFFFFF',
-              padding: '1px 5px', borderRadius: '10px'
-            }}>
-              {badge}
-            </span>
-          )}
-        </>
-      )}
-      
-      {collapsed && active && (
-        <div style={{ position: 'absolute', top: '50%', left: '100%', transform: 'translateY(-50%)', marginLeft: '8px', backgroundColor: '#1E293B', color: '#FFFFFF', fontSize: '11px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', boxShadow: 'var(--shadow-2)', whiteSpace: 'nowrap', zIndex: 10 }}>
-          {label}
-        </div>
-      )}
-    </div>
+    <Link to={to} style={{ textDecoration: 'none' }}>
+      <div 
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '9px',
+          padding: collapsed ? '8px 0' : `8px 10px 8px ${paddingLeft}`,
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          borderRadius: '8px',
+          marginBottom: '2px',
+          backgroundColor: bg,
+          borderLeft: borderLeft,
+          color: color,
+          fontFamily: 'Inter',
+          fontSize: '12.5px',
+          fontWeight: fontWeight,
+          cursor: 'pointer',
+          position: 'relative',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={(e) => {
+          if (!active) {
+            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)';
+            e.currentTarget.style.color = 'rgba(255,255,255,0.85)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!active) {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = 'rgba(255,255,255,0.50)';
+          }
+        }}
+      >
+        {icon}
+        {!collapsed && (
+          <>
+            <span style={{ flex: 1 }}>{label}</span>
+            {badge && (
+              <span style={{
+                fontSize: '9px', fontWeight: 700, backgroundColor: '#EF4444', color: '#FFFFFF',
+                padding: '1px 5px', borderRadius: '10px'
+              }}>
+                {badge}
+              </span>
+            )}
+          </>
+        )}
+        
+        {collapsed && active && (
+          <div style={{ position: 'absolute', top: '50%', left: '100%', transform: 'translateY(-50%)', marginLeft: '8px', backgroundColor: '#1E293B', color: '#FFFFFF', fontSize: '11px', fontWeight: 500, padding: '5px 10px', borderRadius: '6px', boxShadow: 'var(--shadow-2)', whiteSpace: 'nowrap', zIndex: 10 }}>
+            {label}
+          </div>
+        )}
+      </div>
+    </Link>
   );
 }
