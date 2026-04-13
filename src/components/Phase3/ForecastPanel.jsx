@@ -12,7 +12,7 @@ export default function ForecastPanel() {
 
   return (
     <div style={{
-      width: '380px', height: '100%', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0',
+      width: '100%', height: '100%', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0',
       borderRadius: '12px', boxShadow: '0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04)',
       display: 'flex', flexDirection: 'column'
     }}>

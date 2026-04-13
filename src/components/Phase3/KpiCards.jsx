@@ -62,7 +62,7 @@ export function KpiCard({ accentColor, label, value, trendText, trendBg, trendCo
 
 export default function KpiCardRow() {
   return (
-    <div style={{ width: '1152px', display: 'flex', gap: '12px' }}>
+    <div style={{ width: '100%', display: 'flex', gap: '12px' }}>
       <KpiCard
         accentColor="#6366F1"
         label="TOTAL REVENUE" value="$4.28M"

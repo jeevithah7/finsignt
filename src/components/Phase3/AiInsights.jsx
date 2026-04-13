@@ -3,21 +3,21 @@ import { TrendingDown, AlertTriangle, Droplets, Sparkles } from 'lucide-react';
 
 const InsightRow = ({ icon: Icon, iconBg, iconColor, headline, body, link, borderLeftColor }) => (
   <div style={{
-    height: '56px', padding: '10px 16px', borderBottom: '1px solid #E2E8F0',
+    minHeight: '56px', padding: '12px 16px', borderBottom: '1px solid #E2E8F0',
     display: 'flex', gap: '10px', alignItems: 'flex-start',
     borderLeft: `2px solid ${borderLeftColor}`,
     boxSizing: 'border-box'
   }}>
     <div style={{
       width: '30px', height: '30px', borderRadius: '8px', backgroundColor: iconBg,
-      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+      display: 'flex', alignItems: 'center', justifyItems: 'center', flexShrink: 0
     }}>
-      <Icon size={14} color={iconColor} strokeWidth={2} />
+      <Icon size={14} color={iconColor} strokeWidth={2} style={{margin: 'auto'}} />
     </div>
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', fontFamily: 'Inter' }}>{headline}</div>
-      <div style={{ fontSize: '11px', fontWeight: 400, color: '#64748B', marginTop: '1px', lineHeight: 1.4, fontFamily: 'Inter' }}>{body}</div>
-      <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#6366F1', marginTop: '3px', fontFamily: 'Inter', cursor: 'pointer' }}>{link}</div>
+      <div style={{ fontSize: '11px', fontWeight: 400, color: '#64748B', marginTop: '4px', lineHeight: 1.4, fontFamily: 'Inter' }}>{body}</div>
+      <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#6366F1', marginTop: '6px', fontFamily: 'Inter', cursor: 'pointer' }}>{link}</div>
     </div>
   </div>
 );
@@ -25,7 +25,7 @@ const InsightRow = ({ icon: Icon, iconBg, iconColor, headline, body, link, borde
 export default function AiInsights() {
   return (
     <div style={{
-      width: '400px', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0',
+      width: '100%', height: '100%', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0',
       borderRadius: '12px', boxShadow: '0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04)',
       display: 'flex', flexDirection: 'column', overflow: 'hidden'
     }}>
