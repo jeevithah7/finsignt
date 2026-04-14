@@ -60,25 +60,43 @@ export function KpiCard({ accentColor, label, value, trendText, trendBg, trendCo
   );
 }
 
-export default function KpiCardRow() {
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
+export default function KpiCardRow({ timeframe = 'Overview' }) {
+  const [metrics, setMetrics] = useState({ totalRev: '...', netProfit: '...', revChange: '...', profitChange: '...' });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const token = localStorage.getItem('finsight_token');
+        const res = await axios.get(`/api/metrics?timeframe=${timeframe}`, { headers: { Authorization: `Bearer ${token}` }});
+        setMetrics(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchData();
+  }, [timeframe]);
+
   return (
     <div style={{ width: '100%', display: 'flex', gap: '12px' }}>
       <KpiCard
         accentColor="#6366F1"
-        label="TOTAL REVENUE" value="$4.28M"
-        trendText="▲ +12.4%" trendBg="#ECFDF5" trendColor="#065F46"
+        label="TOTAL REVENUE" value={metrics.totalRev}
+        trendText={`▲ ${metrics.revChange}`} trendBg="#ECFDF5" trendColor="#065F46"
         sparklinePoints="0,20 10,16 20,18 30,11 40,8 50,4 60,3"
       />
       <KpiCard
         accentColor="#10B981"
-        label="NET PROFIT" value="$1.14M"
-        trendText="▲ +8.7%" trendBg="#ECFDF5" trendColor="#065F46"
+        label="NET PROFIT" value={metrics.netProfit}
+        trendText={`▲ ${metrics.profitChange}`} trendBg="#ECFDF5" trendColor="#065F46"
         sparklinePoints="0,21 10,17 20,19 30,14 40,10 50,6 60,5"
       />
       <KpiCard
         accentColor="#F59E0B"
-        label="MONTHLY GROWTH" value="+8.3%"
-        trendText="▼ –1.2% MoM" trendBg="#FFFBEB" trendColor="#92400E"
+        label="GROWTH" value="+8.3%"
+        trendText="▼ –1.2% prev" trendBg="#FFFBEB" trendColor="#92400E"
         sparklinePoints="0,14 10,10 20,6 30,9 40,5 50,10 60,8"
       />
       <KpiCard

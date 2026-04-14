@@ -1,5 +1,6 @@
-import React from 'react';
-import { TrendingDown, AlertTriangle, Droplets, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { TrendingDown, AlertTriangle, Droplets, Sparkles, Loader2 } from 'lucide-react';
+import axios from 'axios';
 
 const InsightRow = ({ icon: Icon, iconBg, iconColor, headline, body, link, borderLeftColor }) => (
   <div style={{
@@ -22,7 +23,33 @@ const InsightRow = ({ icon: Icon, iconBg, iconColor, headline, body, link, borde
   </div>
 );
 
-export default function AiInsights() {
+const styleMapping = {
+  dip: { icon: TrendingDown, iconBg: '#FEF2F2', iconColor: '#EF4444', borderLeftColor: '#EF4444', link: 'Investigate →' },
+  warning: { icon: AlertTriangle, iconBg: '#FFFBEB', iconColor: '#F59E0B', borderLeftColor: '#F59E0B', link: 'Review spend →' },
+  info: { icon: Droplets, iconBg: '#EFF6FF', iconColor: '#3B82F6', borderLeftColor: '#3B82F6', link: 'Model scenarios →' },
+  success: { icon: Sparkles, iconBg: '#ECFDF5', iconColor: '#10B981', borderLeftColor: '#10B981', link: 'Apply suggestion →' }
+};
+
+export default function AiInsights({ timeframe = 'Overview' }) {
+  const [insights, setInsights] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchInsights() {
+      setLoading(true);
+      try {
+        const token = localStorage.getItem('finsight_token');
+        const res = await axios.get(`/api/insights?timeframe=${timeframe}`, { headers: { Authorization: `Bearer ${token}` }});
+        setInsights(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchInsights();
+  }, [timeframe]);
+
   return (
     <div style={{
       width: '100%', height: '100%', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0',
@@ -36,34 +63,34 @@ export default function AiInsights() {
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#6366F1', marginRight: '8px' }} />
               <h2 style={{ fontFamily: 'Inter', fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: 0 }}>AI Insights</h2>
            </div>
-           <div style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 400, color: '#94A3B8' }}>4 active signals · updated now</div>
+           <div style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 400, color: '#94A3B8' }}>
+             {loading ? 'Analyzing data...' : `${insights.length} active signals · updated now`}
+           </div>
         </div>
         <div style={{ fontSize: '10px', fontWeight: 600, padding: '2px 8px', backgroundColor: '#F1F5F9', border: '1px solid #E2E8F0', borderRadius: '20px', color: '#64748B' }}>
-           4 signals
+           {loading ? '...' : `${insights.length} signals`}
         </div>
       </div>
 
       {/* ROWS */}
-      <InsightRow
-        icon={TrendingDown} iconBg="#FEF2F2" iconColor="#EF4444" borderLeftColor="#EF4444"
-        headline="Revenue dip detected" body="Oct revenue down 11% vs forecast. Enterprise segment underperforming."
-        link="Investigate →"
-      />
-      <InsightRow
-        icon={AlertTriangle} iconBg="#FFFBEB" iconColor="#F59E0B" borderLeftColor="#F59E0B"
-        headline="Unusual SaaS spend" body="Cloud infra costs +38% MoM. Possible over-provisioning in us-east-1."
-        link="Review spend →"
-      />
-      <InsightRow
-        icon={Droplets} iconBg="#EFF6FF" iconColor="#3B82F6" borderLeftColor="#3B82F6"
-        headline="Cash flow risk: Q1" body="Runway at current burn: 14 months. Below 18-month target threshold."
-        link="Model scenarios →"
-      />
-      <InsightRow
-        icon={Sparkles} iconBg="#ECFDF5" iconColor="#10B981" borderLeftColor="#10B981"
-        headline="Budget optimization" body="Reallocating $42K from marketing to retention yields +6% LTV impact."
-        link="Apply suggestion →"
-      />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        {loading ? (
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
+            <Loader2 className="animate-spin" size={24} color="#6366F1" />
+          </div>
+        ) : (
+          insights.map(i => {
+            const styles = styleMapping[i.type] || styleMapping.info;
+            return (
+              <InsightRow
+                key={i.id}
+                icon={styles.icon} iconBg={styles.iconBg} iconColor={styles.iconColor} borderLeftColor={styles.borderLeftColor}
+                headline={i.title} body={i.desc} link={styles.link}
+              />
+            )
+          })
+        )}
+      </div>
     </div>
   );
 }
